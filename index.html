@@ -1,1 +1,538 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Berlin Döner Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #c0392b;
+      --cream: #faf6ef;
+      --dark: #1a1108;
+      --warm: #e8d5b0;
+      --gold: #c9952a;
+      --muted: #7a6a50;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 2rem 5rem;
+      background-color: var(--dark);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(192,57,43,0.35) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(201,149,42,0.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      color: var(--cream);
+      line-height: 1;
+      animation: fadeUp 0.9s 0.1s ease both;
+    }
+
+    .hero h1 span {
+      color: var(--red);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--warm);
+      max-width: 520px;
+      line-height: 1.7;
+      animation: fadeUp 0.9s 0.2s ease both;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 1rem 2.2rem;
+      background: var(--red);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      border-radius: 2px;
+      transition: background 0.25s, transform 0.2s;
+      animation: fadeUp 0.9s 0.3s ease both;
+    }
+
+    .hero-cta:hover { background: #a93226; transform: translateY(-2px); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: fadeUp 1s 0.6s ease both;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: var(--muted);
+      animation: grow 1.4s ease-in-out infinite alternate;
+    }
+
+    /* ── PHOTO STRIP ── */
+    .photo-strip {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 1fr;
+      height: 420px;
+      gap: 4px;
+    }
+
+    .photo-strip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.9);
+      transition: filter 0.4s, transform 0.5s;
+    }
+
+    .photo-strip img:hover { filter: saturate(1.2); transform: scale(1.02); }
+
+    /* ── SECTION COMMON ── */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.8rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      color: var(--dark);
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      margin-top: 1.5rem;
+      line-height: 1.9;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-visual img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .badge {
+      position: absolute;
+      bottom: -1.5rem;
+      left: -1.5rem;
+      width: 130px;
+      height: 130px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      line-height: 1.4;
+      padding: 1rem;
+      box-shadow: 0 8px 30px rgba(192,57,43,0.4);
+    }
+
+    /* ── TYPES GRID ── */
+    .types-section { max-width: 1100px; margin: 0 auto; padding: 0 2rem 5rem; }
+    .types-section h2 { margin-bottom: 0.5rem; }
+    .types-intro { color: var(--muted); margin-top: 0.8rem; margin-bottom: 3rem; max-width: 500px; line-height: 1.7; }
+
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .type-card {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 2rem;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .type-card:hover { transform: translateY(-4px); }
+
+    .type-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gold);
+    }
+
+    .type-card:nth-child(2)::before { background: var(--red); }
+    .type-card:nth-child(3)::before { background: #4a7c59; }
+
+    .type-emoji { font-size: 2rem; margin-bottom: 1rem; display: block; }
+
+    .type-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .type-card p { font-size: 0.9rem; color: var(--warm); line-height: 1.7; }
+
+    /* ── FACTS BAND ── */
+    .facts-band {
+      background: var(--red);
+      color: white;
+      padding: 3rem 2rem;
+      overflow: hidden;
+    }
+
+    .facts-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .fact-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .fact-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-top: 0.3rem;
+    }
+
+    /* ── SPOTS ── */
+    .spots-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+
+    .spots-grid {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .spot-card {
+      border: 1px solid var(--warm);
+      padding: 1.5rem 2rem;
+      border-radius: 2px;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: box-shadow 0.3s;
+    }
+
+    .spot-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+
+    .spot-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--warm);
+      line-height: 1;
+      min-width: 2rem;
+    }
+
+    .spot-info h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 0.4rem; }
+    .spot-info p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+    .spot-district {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red);
+      font-weight: 500;
+    }
+
+    /* ── DISCOVERY CTA ── */
+    .discovery {
+      background: var(--dark);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .discovery h2 {
+      color: var(--cream);
+      font-size: clamp(2rem, 4vw, 3rem);
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .discovery p {
+      color: var(--warm);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .discovery a.btn {
+      display: inline-block;
+      padding: 1.1rem 2.8rem;
+      background: var(--gold);
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .discovery a.btn:hover { background: #e0aa30; transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--warm);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes grow {
+      from { opacity: 0.2; transform: scaleY(0.5); }
+      to   { opacity: 1;   transform: scaleY(1); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .photo-strip { grid-template-columns: 1fr; height: auto; }
+      .photo-strip img { height: 220px; }
+      .about { grid-template-columns: 1fr; gap: 2rem; }
+      .badge { display: none; }
+      .types-grid { grid-template-columns: 1fr; }
+      .facts-inner { grid-template-columns: repeat(2,1fr); }
+      .spots-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-tag">Berlin · Street Food Culture</p>
+  <h1>Berlin<br/><span>Döner</span> Guide</h1>
+  <p class="hero-sub">Your definitive map through the city's most beloved food — one pita at a time.</p>
+  <a class="hero-cta" href="https://partyrock.aws/u/meltembehar/Ht5hD8BRd/Doner-Discovery-Berlin" target="_blank" rel="noopener">
+    🥙 Explore which döner fits best to your taste!
+  </a>
+  <div class="scroll-hint">Scroll</div>
+</header>
+
+<!-- PHOTO STRIP -->
+<div class="photo-strip">
+  <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=600&q=80" alt="Doner kebab in hand" />
+  <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=900&q=80" alt="Berlin street food stall" />
+  <img src="https://images.unsplash.com/photo-1573821663912-569905455b1c?w=600&q=80" alt="Grilled meat kebab" />
+</div>
+
+<!-- ABOUT -->
+<section>
+  <div class="about">
+    <div class="about-text">
+      <p class="eyebrow">The story</p>
+      <h2>Berlin's Most Iconic Street Food</h2>
+      <p>The döner kebab as Berliners know it was born in this city. Turkish immigrants in the 1970s reinvented the traditional skewered meat into a handheld sandwich stuffed with vegetables, sauces, and sliced bread — and Berlin has never been the same.</p>
+      <p>Today, Berlin boasts over 1,600 döner shops — more per capita than any other city in the world. From Kreuzberg's legendary stands to Mitte's modern riffs, every corner hides a new favourite.</p>
+    </div>
+    <div class="about-visual">
+      <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=700&q=80" alt="Döner being prepared" />
+      <div class="badge">Born in<br/>Berlin<br/>1972</div>
+    </div>
+  </div>
+</section>
+
+<!-- FACTS BAND -->
+<div class="facts-band">
+  <div class="facts-inner">
+    <div>
+      <span class="fact-num">1,600+</span>
+      <span class="fact-label">Döner Shops in Berlin</span>
+    </div>
+    <div>
+      <span class="fact-num">400k</span>
+      <span class="fact-label">Döner sold daily</span>
+    </div>
+    <div>
+      <span class="fact-num">€3.5B</span>
+      <span class="fact-label">Annual market value (Germany)</span>
+    </div>
+    <div>
+      <span class="fact-num">1972</span>
+      <span class="fact-label">Year of invention</span>
+    </div>
+  </div>
+</div>
+
+<!-- TYPES -->
+<div class="types-section">
+  <p class="eyebrow">Know your döner</p>
+  <h2>Three Classics to Know</h2>
+  <p class="types-intro">Berlin's döner scene isn't one-size-fits-all. Here are the three styles you'll encounter most.</p>
+  <div class="types-grid">
+    <div class="type-card">
+      <span class="type-emoji">🥙</span>
+      <h3>Ekmek Arası</h3>
+      <p>The OG: meat sliced off a vertical rotisserie and packed into a half-baguette with tomatoes, cucumber, red cabbage, and a choice of sauces. The Berlin classic.</p>
+    </div>
+    <div class="type-card">
+      <span class="type-emoji">🫓</span>
+      <h3>Dürüm</h3>
+      <p>All the same fillings wrapped tightly inside a thin lavash flatbread and toasted on a griddle. Crunchier, tidier, and popular with the lunch crowd.</p>
+    </div>
+    <div class="type-card">
+      <span class="type-emoji">🥗</span>
+      <h3>Ismarlama</h3>
+      <p>A customizable plate version served with rice or bulgur, salad and extra sauce. Perfect for those who want more greens and a sit-down experience.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LEGENDARY SPOTS -->
+<div class="spots-section">
+  <p class="eyebrow">Must visit</p>
+  <h2>Legendary Spots</h2>
+  <div class="spots-grid">
+    <div class="spot-card">
+      <span class="spot-num">01</span>
+      <div class="spot-info">
+        <h3>Mustafa's Gemüse Kebap</h3>
+        <p>Expect a long queue — it's worth every minute. Roasted vegetables, tangy feta and the crispiest bread in town make this a bucket-list bite.</p>
+        <span class="spot-district">Kreuzberg</span>
+      </div>
+    </div>
+    <div class="spot-card">
+      <span class="spot-num">02</span>
+      <div class="spot-info">
+        <h3>Imren Grill</h3>
+        <p>A Neukölln institution. Family-run since the '80s, their döner plate with house-made chilli sauce has a devoted local following.</p>
+        <span class="spot-district">Neukölln</span>
+      </div>
+    </div>
+    <div class="spot-card">
+      <span class="spot-num">03</span>
+      <div class="spot-info">
+        <h3>Tadim Döner</h3>
+        <p>Beloved for their juicy chicken döner and generous portions. A friendly neighbourhood spot that stays open late for night owls.</p>
+        <span class="spot-district">Friedrichshain</span>
+      </div>
+    </div>
+    <div class="spot-card">
+      <span class="spot-num">04</span>
+      <div class="spot-info">
+        <h3>Rüyam Gemüse Kebab</h3>
+        <p>One of the best-kept secrets in Charlottenburg — fresh veg, fluffy bread, and sauces made in-house every morning.</p>
+        <span class="spot-district">Charlottenburg</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DISCOVERY CTA -->
+<div class="discovery">
+  <h2>Not sure which döner suits you?</h2>
+  <p>Answer a few quick questions and let our AI-powered Döner Finder recommend your perfect match from Berlin's finest.</p>
+  <a class="btn" href="https://partyrock.aws/u/meltembehar/Ht5hD8BRd/Doner-Discovery-Berlin" target="_blank" rel="noopener">
+    🥙 Explore which döner fits best to your taste!
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Berlin Döner Guide &mdash; Made with ❤️ for döner lovers everywhere</p>
+</footer>
+
+</body>
+</html>
